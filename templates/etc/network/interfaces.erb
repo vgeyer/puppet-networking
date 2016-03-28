@@ -1,0 +1,37 @@
+# ATTENTION!
+#
+# THIS FILE IS MANAGED BY PUPPET. DO NOT CHANGE.
+
+auto lo
+    iface lo inet loopback
+<%- if @inet6_loopback == true -%>
+    iface lo inet6 loopback
+<%- end -%>
+<%- @interfaces.each do |name, interface| -%>
+    <%- if interface.has_key?('auto') and interface['auto'] == true -%>
+auto <%= name %>
+    <%- end -%>
+    <%- iterate_keys = %w(inet inet6) -%>
+    <%- iterate_keys.each do |family| -%>
+        <%- if interface.has_key?(family) -%>
+            <%- settings = interface[family] -%>
+            <%- if settings.has_key?('method') and %w(static dhcp loopback).include?(settings['method']) -%>
+                <%- if settings['method'] == 'static' && !settings.has_key?('family_settings') -%>
+                    <%= scope.function_fail(["Cant configure interface #{name} as static because of missing family settings."]) %>
+                <%- end -%>
+iface <%= name %> <%= family %> <%= settings['method'] %>
+                <%- settings['family_settings'].each do |setting_name, setting_value|-%>
+                    <%- if setting_value.kind_of?(Array) -%>
+                        <%- setting_value.each do |nes_setting_value|-%>
+    <%= setting_name %> <%= nes_setting_value %>
+                        <%- end -%>
+                    <%- else -%>
+    <%= setting_name %> <%= setting_value %>
+                    <%- end -%>
+                <%- end -%>
+            <%- else -%>
+                <%= scope.function_fail(["Method #{settings['method']} interface #{name} is not known."]) %>
+            <%- end -%>
+        <%- end -%>
+    <%- end -%>
+<%- end -%>

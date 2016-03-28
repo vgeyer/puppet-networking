@@ -1,0 +1,23 @@
+{
+  "name": "lexance-networking",
+  "version": "0.0.2",
+  "author": "Victor J. C. Geyer",
+  "license": "Apache-2.0",
+  "summary": "A module for managing linux network interfaces.",
+  "source": "https://github.com/vgeyer/puppet-networking",
+  "project_page": "https://github.com/vgeyer/puppet-networking",
+  "issues_url": "https://github.com/vgeyer/puppet-networking/issues",
+  "tags": ["networking", "iftab", "ipv6", "dualstack", "ipv4"],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [ "14.04" ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [ "6", "7", "8" ]
+    }
+  ],
+  "dependencies": [
+  ]
+}

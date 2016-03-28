@@ -1,0 +1,13 @@
+# ATTENTION!
+#
+# THIS FILE IS MANAGED BY PUPPET. DO NOT CHANGE.
+
+<%- @interfaces.each do |name, interface| -%>
+    <%- if interface.has_key?('mac')  -%>
+        <%- if scope.function_is_mac_address([interface['mac']]) -%>
+<%= name %> mac <%= interface['mac'] %>
+        <%- else -%>
+            <%= scope.function_fail(["MAC address for interface #{name} is not defined or not valid."]) %>
+        <%- end -%>
+    <%- end -%>
+<%- end -%>
